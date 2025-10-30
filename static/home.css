@@ -8,8 +8,8 @@
 
 /* Header */
 .header {
-  background-color: #333;
-  color: #8012b3;
+  background-color: #8B4513;
+  color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -73,9 +73,9 @@
 /* Hero Section */
 .hero {
   text-align: center;
-  background: linear-gradient(to right, #ee70ff, #d0ff00);
+  background: #8B4513;
   padding: 3rem 1rem;
-  color: #333;
+  color: #fff;
 }
 
 .hero h2 {
