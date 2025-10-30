@@ -119,7 +119,7 @@ app.use(session({
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     maxAge: 86400000
   }
 }));
@@ -217,17 +217,19 @@ app.post("/login", (req, res) => {
   const { email, password } = req.body;
   console.log("Login attempt:", email);
   db.query("SELECT * FROM users WHERE email = ?", [email], (err, results) => {
+    console.error("DB query error:", JSON.stringify(err));
     if (err) {
       console.error("DB query error:", err.message || err);
       return res.status(500).json({ error: "Something went wrong. Try again later." });
     }
-    console.log("DB query results:", results);
+    console.log("DB query results:", JSON.stringify(results));
     if (!results || results.length === 0) {
       console.log("No user found for email:", email);
       return res.status(400).json({ error: "Invalid credentials" });
     }
     const user = results[0];
     bcrypt.compare(password, user.password, (err, match) => {
+      console.error("Bcrypt compare error:", JSON.stringify(err));
       if (err) {
         console.error("Bcrypt error:", err.message || err);
         return res.status(500).json({ error: "Something went wrong. Try again later." });
@@ -236,7 +238,15 @@ app.post("/login", (req, res) => {
       if (!match) return res.status(400).json({ error: "Invalid credentials" });
       req.session.user = { id: user.id, email: user.email };
       console.log("Session created:", req.session.user);
-      res.json({ message: "Logged in", user: req.session.user });
+      req.session.save((saveErr) => {
+        console.error("Session save error:", JSON.stringify(saveErr));
+        if (saveErr) {
+          console.error("Session save failed:", saveErr.message || saveErr);
+          return res.status(500).json({ error: "Something went wrong. Try again later." });
+        }
+        console.log("Session saved successfully");
+        res.json({ message: "Logged in", user: req.session.user });
+      });
     });
   });
 });
@@ -320,6 +330,11 @@ app.get("/checkout", (req, res) => {
 });
 app.get("/login", (req, res) => res.sendFile(path.join(__dirname, "static", "login.html")));
 app.get("/register", (req, res) => res.sendFile(path.join(__dirname, "static", "register.html")));
+
+app.use((err, req, res, next) => {
+  console.error(err.stack || err);
+  res.status(500).json({ error: 'Internal server error', details: String(err) });
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => console.log(`Running on port ${port}`));
