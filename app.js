@@ -108,13 +108,7 @@ const cartTable = `CREATE TABLE IF NOT EXISTS cart (
 db.query(cartTable);
 
 const MySQLStore = MySQLStoreFactory(session);
-const sessionStore = new MySQLStore({
-  host: process.env.MYSQL_ADDON_HOST,
-  user: process.env.MYSQL_ADDON_USER,
-  password: process.env.MYSQL_ADDON_PASSWORD,
-  database: process.env.MYSQL_ADDON_DB,
-  port: process.env.MYSQL_ADDON_PORT || 3306
-});
+const sessionStore = new MySQLStore({}, db);
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'SUPER_SECRET_KEY_CHANGE_THIS',
