@@ -44,39 +44,48 @@ const db = mysql.createPool({
   connectionLimit: 1
 });
 
-db.getConnection((err, connection) => {
-  if (err) {
-    console.error('Database connection failed:', err.message);
-    return;
-  }
-  console.log('Connected to MySQL database.');
-  connection.release();
-});
+// Initialize database tables
+const initializeDatabase = () => {
+  return new Promise((resolve, reject) => {
+    db.getConnection((err, connection) => {
+      if (err) {
+        console.error('Database connection failed:', err.message);
+        reject(err);
+        return;
+      }
+      console.log('Connected to MySQL database.');
+      connection.release();
 
-const usersTable = `CREATE TABLE IF NOT EXISTS users (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL
-)`;
+      const usersTable = `CREATE TABLE IF NOT EXISTS users (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL
+      )`;
 
-db.query(usersTable, (err) => {
-  if (err) console.error("Error creating users table:", err.message);
-  else console.log("Users table created or already exists");
-});
+      db.query(usersTable, (err) => {
+        if (err) {
+          console.error("Error creating users table:", err.message);
+          reject(err);
+          return;
+        }
+        console.log("Users table created or already exists");
 
-const productsTable = `CREATE TABLE IF NOT EXISTS products (
-  id INT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  price INT NOT NULL
-)`;
+        const productsTable = `CREATE TABLE IF NOT EXISTS products (
+          id INT PRIMARY KEY,
+          name VARCHAR(255) NOT NULL,
+          price INT NOT NULL
+        )`;
 
-db.query(productsTable, (err) => {
-  if (err) console.error("Error creating products table:", err.message);
-  else {
-    console.log("Products table created or already exists");
-    // Insert products if not exists
-    const insertProducts = `
+        db.query(productsTable, (err) => {
+          if (err) {
+            console.error("Error creating products table:", err.message);
+            reject(err);
+            return;
+          }
+          console.log("Products table created or already exists");
+
+          const insertProducts = `
 INSERT IGNORE INTO products (id, name, price) VALUES
 (1, 'Bluetooth Speaker', 110),
 (2, 'Smart Phone', 215),
@@ -100,26 +109,38 @@ INSERT IGNORE INTO products (id, name, price) VALUES
 (20, 'Smart TV', 9500)
 `;
 
-    db.query(insertProducts, (err) => {
-      if (err) console.error("Error inserting products:", err.message);
-      else console.log("Products inserted or already exist");
+          db.query(insertProducts, (err) => {
+            if (err) {
+              console.error("Error inserting products:", err.message);
+              reject(err);
+              return;
+            }
+            console.log("Products inserted or already exist");
+
+            const cartTable = `CREATE TABLE IF NOT EXISTS cart (
+              id INT PRIMARY KEY AUTO_INCREMENT,
+              user_id INT NOT NULL,
+              product_id INT NOT NULL,
+              quantity INT DEFAULT 1,
+              FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+              FOREIGN KEY (product_id) REFERENCES products(id)
+            )`;
+
+            db.query(cartTable, (err) => {
+              if (err) {
+                console.error("Error creating cart table:", err.message);
+                reject(err);
+                return;
+              }
+              console.log("Cart table created or already exists");
+              resolve();
+            });
+          });
+        });
+      });
     });
-  }
-});
-
-const cartTable = `CREATE TABLE IF NOT EXISTS cart (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT NOT NULL,
-  product_id INT NOT NULL,
-  quantity INT DEFAULT 1,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-  FOREIGN KEY (product_id) REFERENCES products(id)
-)`;
-
-db.query(cartTable, (err) => {
-  if (err) console.error("Error creating cart table:", err.message);
-  else console.log("Cart table created or already exists");
-});
+  });
+};
 
 const MySQLStore = MySQLStoreFactory(session);
 const sessionStore = new MySQLStore({}, db);
@@ -349,5 +370,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error', details: String(err) });
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, "0.0.0.0", () => console.log(`Running on port ${port}`));
+// Initialize database before starting the server
+initializeDatabase().then(() => {
+  const port = process.env.PORT || 3000;
+  app.listen(port, "0.0.0.0", () => console.log(`Running on port ${port}`));
+}).catch((err) => {
+  console.error("Failed to initialize database:", err.message);
+  process.exit(1);
+});
