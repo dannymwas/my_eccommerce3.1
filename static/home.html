@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - Online Shop</title>
+  <link rel="stylesheet" href="home.css" />
+</head>
+<body>
+  <header class="header">
+  <div class="logo">
+    <h1>🛍️ My Online Shop</h1>
+  </div>
+
+  <nav>
+    <ul class="nav-links">
+      <li><a href="/" id="homeLink">Home</a></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="header-actions">
+    <a href="login.html" id="loginBtn" class="btn login-btn">Login</a>
+    <a href="register.html" id="registerBtn" class="btn register-btn">Register</a>
+    <a href="logout.html" id="logoutBtn" class="btn logout-btn" style="display: none;">Logout</a>
+
+    <div class="cart-container" onclick="toggleCart()">
+      <a href="cart.html"><span class="cart-icon">🛒</span></a>
+      <span id="cart-count" class="cart-count">0</span>
+    </div>
+  </div>
+</header>
+
+  <main>
+    <section class="hero">
+      <h2>Welcome to the Best Online Shopping Experience</h2>
+      <p>Find your favorite products at the best prices</p>
+    </section>
+
+    <section class="products">
+      <h2 class="section-title">Available Products</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="img\bluetooth_speaker.jpeg" alt="Bluetooth Speaker">
+          <h3>Bluetooth Speaker</h3>
+          <p class="price">KSh 110</p>
+          <button onclick="addToCart(1)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\smartphone2.jpeg" alt="Product 2">
+          <h3>Smart Phone</h3>
+          <p class="price">KSh 215</p>
+          <button onclick="addToCart(2)">Add to Cart</button>
+        </div>
+
+         <div class="product-card">
+          <img src="img\smartwatch.jpeg" alt="Product 3">
+          <h3>Smart Watch</h3>
+          <p class="price">KSh 115</p>
+          <button onclick="addToCart(3)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\wireless headphones.jpeg" alt="Product 4">
+          <h3>Wireless Headphones</h3>
+          <p class="price">KSh 120</p>
+          <button onclick="addToCart(4)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\comp cpu.jpg" alt="Product 5">
+          <h3>Computer CPU</h3>
+          <p class="price">KSh 2520</p>
+          <button onclick="addToCart(5)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\cooker1.jpg" alt="Product 6">
+          <h3>Cooker</h3>
+          <p class="price">KSh 230</p>
+          <button onclick="addToCart(6)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\cooker2.jpg" alt="Product 7">
+          <h3>Electric Cooker</h3>
+          <p class="price">KSh 1330</p>
+          <button onclick="addToCart(7)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\curved monitor.jpg" alt="Product 8">
+          <h3>Curved Monitor </h3>
+          <p class="price">KSh 730</p>
+          <button onclick="addToCart(8)">Add to Cart</button>
+        </div>
+
+         <div class="product-card">
+          <img src="img\ear buds.jpg" alt="Product 9">
+          <h3>Ear Buds </h3>
+          <p class="price">KSh 130</p>
+          <button onclick="addToCart(9)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\electric extension.jpg" alt="Product 10">
+          <h3>Electric Extension </h3>
+          <p class="price">KSh 430</p>
+          <button onclick="addToCart(10)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\fridge.jpg" alt="Product 11">
+          <h3>Fridge </h3>
+          <p class="price">KSh 2100</p>
+          <button onclick="addToCart(11)">Add to Cart</button>
+        </div>
+
+         <div class="product-card">
+          <img src="img\gaming cpu.jpg" alt="Product 12">
+          <h3>Gaming CPU </h3>
+          <p class="price">KSh 3500</p>
+          <button onclick="addToCart(12)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\gaming pads.jpg" alt="Product 13">
+          <h3>Gaming Pads</h3>
+          <p class="price">KSh 3500</p>
+          <button onclick="addToCart(13)">Add to Cart</button>
+        </div>
+
+         <div class="product-card">
+          <img src="img\home theatre.jpg" alt="Product 14">
+          <h3>Home Theatre</h3>
+          <p class="price">KSh 5500</p>
+          <button onclick="addToCart(14)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\laptop bag.jpg" alt="Product 15">
+          <h3>Laptop Bag </h3>
+          <p class="price">KSh 500</p>
+          <button onclick="addToCart(15)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\Laptop.jpg" alt="Product 16">
+          <h3>Laptop</h3>
+          <p class="price">KSh 6500</p>
+          <button onclick="addToCart(16)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\oven.jpg" alt="Product 17">
+          <h3>Oven</h3>
+          <p class="price">KSh 500</p>
+          <button onclick="addToCart(17)">Add to Cart</button>
+        </div>
+
+         <div class="product-card">
+          <img src="img\play station 5.jpg" alt="Product 18">
+          <h3> Play Station </h3>
+          <p class="price">KSh 8500</p>
+          <button onclick="addToCart(18)">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+          <img src="img\router.jpg" alt="Product 19">
+          <h3> Router </h3>
+          <p class="price">KSh 1500</p>
+          <button onclick="addToCart(19)">Add to Cart</button>
+        </div>
+
+         <div class="product-card">
+          <img src="img\smartTV2.jpg" alt="Product 20">
+          <h3> Smart TV </h3>
+          <p class="price">KSh 9500</p>
+          <button onclick="addToCart(20)">Add to Cart</button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Cart Sidebar -->
+  <aside id="cart" class="cart">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button class="close-cart" onclick="toggleCart()">✖</button>
+    </div>
+    <ul id="cart-items" class="cart-items"></ul>
+    <p id="total" class="cart-total">Total: KSh 0</p>
+    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+  </aside>
+
+  <footer>
+    <p>&copy; 2025 My Online Shop | All Rights Reserved</p>
+  </footer>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const loginBtn = document.getElementById("loginBtn");
+    const registerBtn = document.getElementById("registerBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const heroH2 = document.querySelector('.hero h2');
+    const homeLink = document.getElementById("homeLink");
+
+    function updateHeader() {
+      try {
+        const userData = localStorage.getItem("user");
+        const user = userData ? JSON.parse(userData) : null;
+        if (user && user.email) {
+          loginBtn.style.display = "none";
+          registerBtn.style.display = "none";
+          logoutBtn.style.display = "inline-block";
+          heroH2.textContent = `Welcome back, ${user.email}! Enjoy the Best Online Shopping Experience`;
+          homeLink.href = "/home";
+        } else {
+          loginBtn.style.display = "inline-block";
+          registerBtn.style.display = "inline-block";
+          logoutBtn.style.display = "none";
+          heroH2.textContent = 'Welcome to the Best Online Shopping Experience';
+          homeLink.href = "/";
+        }
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        // Reset to default state if parsing fails
+        loginBtn.style.display = "inline-block";
+        registerBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+        heroH2.textContent = 'Welcome to the Best Online Shopping Experience';
+        homeLink.href = "/";
+      }
+    }
+
+    // Initial state
+    updateHeader();
+
+    // When Logout is clicked
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      // Clear all user-related data
+      localStorage.removeItem("user");
+      localStorage.removeItem("cartItems");
+
+      // Update header immediately
+      updateHeader();
+
+      // Redirect to homepage
+      window.location.href = "/";
+    });
+  });
+</script>
+  <script src="home.js"></script>
+
+
+
+</body>
+</html>

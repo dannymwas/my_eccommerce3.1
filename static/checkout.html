@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout - M-Pesa Payment</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #00b14f, #004d26);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+      margin: 0;
+    }
+
+    .checkout-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      width: 340px;
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+
+    h2 {
+      color: #00b14f;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #00b14f;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #008a3d;
+      transform: scale(1.03);
+    }
+
+    #message {
+      margin-top: 15px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #ccc;
+      border-top-color: #00b14f;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="checkout-container">
+    <h2>Checkout</h2>
+    <p>Pay securely via <strong>M-Pesa</strong></p>
+
+    <label for="phone">Enter your phone number:</label>
+    <input type="text" id="phone" placeholder="e.g. 254712345678" />
+
+    <p id="totalDisplay">Total: Calculating...</p>
+
+    <button id="confirmPayment">Confirm Payment</button>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    const confirmBtn = document.getElementById("confirmPayment");
+    const messageEl = document.getElementById("message");
+    const totalDisplay = document.getElementById("totalDisplay");
+
+    // Function to get current user
+    function getCurrentUser() {
+      try {
+        return JSON.parse(localStorage.getItem("user"));
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Function to calculate total from cart
+    async function calculateTotal() {
+      const user = getCurrentUser();
+      let total = 0;
+
+      if (user && user.id) {
+        // Logged in: fetch from server
+        try {
+          const response = await fetch("/api/cart", { credentials: "include" });
+          if (response.ok) {
+            const items = await response.json();
+            total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+          }
+        } catch (error) {
+          console.error("Error fetching cart from server:", error);
+        }
+      } else {
+        // Guest: calculate from localStorage
+        const cart = JSON.parse(localStorage.getItem("guest_cart")) || [];
+        // Products array with prices
+        const products = [
+          { id: 1, price: 110 }, // Bluetooth Speaker
+          { id: 2, price: 215 }, // Smart Phone
+          { id: 3, price: 115 }, // Smart Watch
+          { id: 4, price: 120 }, // Wireless Headphones
+          { id: 5, price: 2520 }, // Computer CPU
+          { id: 6, price: 230 }, // Cooker
+          { id: 7, price: 1330 }, // Electric Cooker
+          { id: 8, price: 730 }, // Curved Monitor
+          { id: 9, price: 130 }, // Ear Buds
+          { id: 10, price: 430 }, // Electric Extension
+          { id: 11, price: 2100 }, // Fridge
+          { id: 12, price: 3500 }, // Gaming CPU
+          { id: 13, price: 3500 }, // Gaming Pads
+          { id: 14, price: 5500 }, // Home Theatre
+          { id: 15, price: 500 }, // Laptop Bag
+          { id: 16, price: 6500 }, // Laptop
+          { id: 17, price: 500 }, // Oven
+          { id: 18, price: 8500 }, // Play Station
+          { id: 19, price: 1500 }, // Router
+          { id: 20, price: 9500 }, // Smart TV
+        ];
+        total = cart.reduce((sum, item) => {
+          const product = products.find(p => p.id === item.product_id);
+          return sum + (product ? product.price * item.quantity : 0);
+        }, 0);
+      }
+
+      totalDisplay.textContent = `Total: KSh ${total}`;
+      return total;
+    }
+
+    // Load total on page load
+    document.addEventListener("DOMContentLoaded", calculateTotal);
+
+    confirmBtn.addEventListener("click", async () => {
+      const phone = document.getElementById("phone").value.trim();
+
+      if (!phone || !/^(2547\d{8})$/.test(phone)) {
+        messageEl.textContent = "⚠️ Please enter a valid M-Pesa number (e.g. 2547XXXXXXXX)";
+        messageEl.style.color = "red";
+        return;
+      }
+
+      messageEl.innerHTML = '<div class="loading"></div> Sending STK Push...';
+      messageEl.style.color = "#333";
+
+      const amount = await calculateTotal();
+
+      if (amount <= 0) {
+        messageEl.textContent = "⚠️ Your cart is empty.";
+        messageEl.style.color = "red";
+        return;
+      }
+
+      try {
+        const res = await fetch("/stkpush", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone, amount: amount.toString() }),
+        });
+
+        const data = await res.json();
+
+        if (data.data && data.data.ResponseDescription) {
+          messageEl.textContent = "✅ " + data.data.ResponseDescription;
+          messageEl.style.color = "green";
+        } else if (data.errorMessage) {
+          messageEl.textContent = "⚠️ " + data.errorMessage;
+          messageEl.style.color = "red";
+        } else {
+          messageEl.textContent = "⚠️ Payment request failed. Try again.";
+          messageEl.style.color = "red";
+        }
+      } catch (err) {
+        console.error(err);
+        messageEl.textContent = "❌ Error connecting to server.";
+        messageEl.style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>
