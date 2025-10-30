@@ -87,26 +87,26 @@ const initializeDatabase = () => {
 
           const insertProducts = `
 INSERT IGNORE INTO products (id, name, price) VALUES
-(1, 'Bluetooth Speaker', 110),
-(2, 'Smart Phone', 215),
-(3, 'Smart Watch', 115),
-(4, 'Wireless Headphones', 120),
-(5, 'Computer CPU', 2520),
-(6, 'Cooker', 230),
-(7, 'Electric Cooker', 1330),
-(8, 'Curved Monitor', 730),
-(9, 'Ear Buds', 130),
-(10, 'Electric Extension', 430),
-(11, 'Fridge', 2100),
-(12, 'Gaming CPU', 3500),
+(1, 'Bluetooth Speaker', 1500),
+(2, 'Smart Phone', 11999),
+(3, 'Smart Watch', 1500),
+(4, 'Wireless Headphones', 1000),
+(5, 'Computer CPU', 9500),
+(6, 'Cooker', 3500),
+(7, 'Electric Cooker', 5000),
+(8, 'Curved Monitor', 30000),
+(9, 'Ear Buds', 700),
+(10, 'Electric Extension', 650),
+(11, 'Fridge', 30000),
+(12, 'Gaming CPU', 20000),
 (13, 'Gaming Pads', 3500),
-(14, 'Home Theatre', 5500),
-(15, 'Laptop Bag', 500),
-(16, 'Laptop', 6500),
-(17, 'Oven', 500),
-(18, 'Play Station', 8500),
-(19, 'Router', 1500),
-(20, 'Smart TV', 9500)
+(14, 'Home Theatre', 22500),
+(15, 'Laptop Bag', 1000),
+(16, 'Laptop', 36500),
+(17, 'Oven', 5000),
+(18, 'Play Station', 85000),
+(19, 'Router', 1700),
+(20, 'Smart TV', 12999)
 `;
 
           db.query(insertProducts, (err) => {
