@@ -18,11 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
       messageBox.innerText = "⏳ Processing payment... Please wait.";
       messageBox.style.color = "blue";
 
-      const response = await fetch("/stkpush", {
+      const BASE_URL = window.location.origin;
+      const response = await fetch(`${BASE_URL}/stkpush`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ phone, amount }),
       });
 

@@ -24,7 +24,8 @@ async function addToCart(productId) {
   // If logged in → Save to server
   if (user && user.id) {
     try {
-      const response = await fetch('http://localhost:3000/cart/add', {
+      const BASE_URL = window.location.origin;
+      const response = await fetch(`${BASE_URL}/cart/add`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -65,11 +66,12 @@ async function updateCartCount() {
 
   // Logged in → Count from server
   if (user && user.id) {
-    const response = await fetch(`http://localhost:3000/cart`, { credentials: 'include' });
+    const BASE_URL = window.location.origin;
+    const response = await fetch(`${BASE_URL}/cart`, { credentials: 'include' });
     const items = response.ok ? await response.json() : [];
     const count = items.reduce((sum, i) => sum + i.quantity, 0);
     document.getElementById('cart-count').textContent = count;
-  } 
+  }
 
   // Guest → Count from localStorage
   else {

@@ -31,7 +31,8 @@ async function loadCart() {
   if (user) {
     // Logged in: fetch from server
     try {
-      const response = await fetch('/api/cart', { credentials: 'include' });
+      const BASE_URL = window.location.origin;
+      const response = await fetch(`${BASE_URL}/api/cart`, { credentials: 'include' });
       if (response.ok) {
         cartItems = await response.json();
       }
@@ -78,7 +79,8 @@ async function removeFromCart(productId) {
   if (user) {
     // Logged in: remove from server
     try {
-      const response = await fetch('/cart/remove', {
+      const BASE_URL = window.location.origin;
+      const response = await fetch(`${BASE_URL}/cart/remove`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
