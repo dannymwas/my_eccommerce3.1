@@ -34,21 +34,20 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname, "static")));
 
-const db = mysql.createPool({
+const db = mysql.createConnection({
   host: process.env.MYSQL_ADDON_HOST,
   user: process.env.MYSQL_ADDON_USER,
   password: process.env.MYSQL_ADDON_PASSWORD,
   database: process.env.MYSQL_ADDON_DB,
-  port: process.env.MYSQL_ADDON_PORT || 3306,
-  connectionLimit: 1
+  port: process.env.MYSQL_ADDON_PORT || 3306
 });
 
-db.getConnection((err, connection) => {
-  if (err) console.error("DB error:", err.message);
-  else {
-    console.log("Connected to MySQL");
-    connection.release();
+db.connect(err => {
+  if (err) {
+    console.error('Database connection failed:', err.stack);
+    return;
   }
+  console.log('Connected to MySQL database.');
 });
 
 const usersTable = `CREATE TABLE IF NOT EXISTS users (
