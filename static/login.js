@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
+      const BASE_URL = window.location.origin;
       // 🔹 Send login request to backend
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch(`${BASE_URL}/login`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   credentials: "include",   // ✅ VERY IMPORTANT: allow cookies to be stored
