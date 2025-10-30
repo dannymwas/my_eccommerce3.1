@@ -144,6 +144,16 @@ async function generateToken() {
   return data.access_token;
 }
 
+app.get("/db-test", (req, res) => {
+  db.query("SELECT 1", (err, results) => {
+    if (err) {
+      console.error("DB test error:", err.message);
+      return res.status(500).json({ error: "Database connection failed", details: err.message });
+    }
+    res.json({ message: "Database connected successfully", results });
+  });
+});
+
 app.get("/token", async (req, res) => {
   try {
     const token = await generateToken();
@@ -210,20 +220,27 @@ app.post("/register",
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
+  console.log("Login attempt:", email);
   db.query("SELECT * FROM users WHERE email = ?", [email], (err, results) => {
     if (err) {
       console.error("DB query error:", err.message || err);
       return res.status(500).json({ error: "Something went wrong. Try again later." });
     }
-    if (!results || results.length === 0) return res.status(400).json({ error: "Invalid credentials" });
+    console.log("DB query results:", results);
+    if (!results || results.length === 0) {
+      console.log("No user found for email:", email);
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
     const user = results[0];
     bcrypt.compare(password, user.password, (err, match) => {
       if (err) {
         console.error("Bcrypt error:", err.message || err);
         return res.status(500).json({ error: "Something went wrong. Try again later." });
       }
+      console.log("Password match:", match);
       if (!match) return res.status(400).json({ error: "Invalid credentials" });
       req.session.user = { id: user.id, email: user.email };
+      console.log("Session created:", req.session.user);
       res.json({ message: "Logged in", user: req.session.user });
     });
   });
