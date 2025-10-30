@@ -210,14 +210,14 @@ app.post("/login", (req, res) => {
   const { email, password } = req.body;
   db.query("SELECT * FROM users WHERE email = ?", [email], (err, results) => {
     if (err) {
-      console.error("DB query error:", err);
+      console.error("DB query error:", err.message || err);
       return res.status(500).json({ error: "Something went wrong. Try again later." });
     }
     if (!results || results.length === 0) return res.status(400).json({ error: "Invalid credentials" });
     const user = results[0];
     bcrypt.compare(password, user.password, (err, match) => {
       if (err) {
-        console.error("Bcrypt error:", err);
+        console.error("Bcrypt error:", err.message || err);
         return res.status(500).json({ error: "Something went wrong. Try again later." });
       }
       if (!match) return res.status(400).json({ error: "Invalid credentials" });
