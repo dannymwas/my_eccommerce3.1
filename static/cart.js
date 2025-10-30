@@ -2,26 +2,26 @@ const user = JSON.parse(localStorage.getItem("user"));
 
 // Product data (hardcoded for now)
 const products = [
-  { id: 1, name: "Bluetooth Speaker", price: 110 },
-  { id: 2, name: "Smart Phone", price: 215 },
-  { id: 3, name: "Smart Watch", price: 115 },
-  { id: 4, name: "Wireless Headphones", price: 120 },
-  { id: 5, name: "Computer CPU", price: 2520 },
-  { id: 6, name: "Cooker", price: 230 },
-  { id: 7, name: "Electric Cooker", price: 1330 },
-  { id: 8, name: "Curved Monitor", price: 730 },
-  { id: 9, name: "Ear Buds", price: 130 },
-  { id: 10, name: "Electric Extension", price: 430 },
-  { id: 11, name: "Fridge", price: 2100 },
-  { id: 12, name: "Gaming CPU", price: 3500 },
+  { id: 1, name: "Bluetooth Speaker", price: 1500 },
+  { id: 2, name: "Smart Phone", price: 11999 },
+  { id: 3, name: "Smart Watch", price: 1500 },
+  { id: 4, name: "Wireless Headphones", price: 1000 },
+  { id: 5, name: "Computer CPU", price: 9500 },
+  { id: 6, name: "Cooker", price: 3500 },
+  { id: 7, name: "Electric Cooker", price: 5000 },
+  { id: 8, name: "Curved Monitor", price: 30000 },
+  { id: 9, name: "Ear Buds", price: 700 },
+  { id: 10, name: "Electric Extension", price: 650 },
+  { id: 11, name: "Fridge", price: 30000 },
+  { id: 12, name: "Gaming CPU", price: 20000 },
   { id: 13, name: "Gaming Pads", price: 3500 },
-  { id: 14, name: "Home Theatre", price: 5500 },
-  { id: 15, name: "Laptop Bag", price: 500 },
-  { id: 16, name: "Laptop", price: 6500 },
-  { id: 17, name: "Oven", price: 500 },
-  { id: 18, name: "Play Station", price: 8500 },
-  { id: 19, name: "Router", price: 1500 },
-  { id: 20, name: "Smart TV", price: 9500 }
+  { id: 14, name: "Home Theatre", price: 22500 },
+  { id: 15, name: "Laptop Bag", price: 1000 },
+  { id: 16, name: "Laptop", price: 36500 },
+  { id: 17, name: "Oven", price: 5000 },
+  { id: 18, name: "Play Station", price: 85000 },
+  { id: 19, name: "Router", price: 1700 },
+  { id: 20, name: "Smart TV", price: 12999 }
 ];
 
 async function loadCart() {
