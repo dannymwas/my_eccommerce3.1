@@ -41,7 +41,7 @@ const db = mysql.createPool({
   password: process.env.MYSQL_ADDON_PASSWORD,
   database: process.env.MYSQL_ADDON_DB,
   port: process.env.MYSQL_ADDON_PORT || 3306,
-  connectionLimit: 2
+  connectionLimit: 1
 });
 
 db.getConnection((err, connection) => {
@@ -60,7 +60,10 @@ const usersTable = `CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL
 )`;
 
-db.query(usersTable);
+db.query(usersTable, (err) => {
+  if (err) console.error("Error creating users table:", err.message);
+  else console.log("Users table created or already exists");
+});
 
 const productsTable = `CREATE TABLE IF NOT EXISTS products (
   id INT PRIMARY KEY,
@@ -68,10 +71,12 @@ const productsTable = `CREATE TABLE IF NOT EXISTS products (
   price INT NOT NULL
 )`;
 
-db.query(productsTable);
-
-// Insert products if not exists
-const insertProducts = `
+db.query(productsTable, (err) => {
+  if (err) console.error("Error creating products table:", err.message);
+  else {
+    console.log("Products table created or already exists");
+    // Insert products if not exists
+    const insertProducts = `
 INSERT IGNORE INTO products (id, name, price) VALUES
 (1, 'Bluetooth Speaker', 110),
 (2, 'Smart Phone', 215),
@@ -95,7 +100,12 @@ INSERT IGNORE INTO products (id, name, price) VALUES
 (20, 'Smart TV', 9500)
 `;
 
-db.query(insertProducts);
+    db.query(insertProducts, (err) => {
+      if (err) console.error("Error inserting products:", err.message);
+      else console.log("Products inserted or already exist");
+    });
+  }
+});
 
 const cartTable = `CREATE TABLE IF NOT EXISTS cart (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -106,7 +116,10 @@ const cartTable = `CREATE TABLE IF NOT EXISTS cart (
   FOREIGN KEY (product_id) REFERENCES products(id)
 )`;
 
-db.query(cartTable);
+db.query(cartTable, (err) => {
+  if (err) console.error("Error creating cart table:", err.message);
+  else console.log("Cart table created or already exists");
+});
 
 const MySQLStore = MySQLStoreFactory(session);
 const sessionStore = new MySQLStore({}, db);
