@@ -126,7 +126,7 @@
 }
 
 button {
-  background-color: #ff6600;
+  background-color: #8B4513;
   color: #fff;
   border: none;
   padding: 0.6rem 1.2rem;
@@ -136,7 +136,7 @@ button {
 }
 
 button:hover {
-  background-color: #1700e6;
+  background-color: #654321;
 }
 
 /* Cart Sidebar */
