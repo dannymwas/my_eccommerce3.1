@@ -270,7 +270,7 @@ app.post("/login", (req, res) => {
       }
       console.log("Password match:", match);
       if (!match) return res.status(400).json({ error: "Invalid credentials" });
-      req.session.user = { id: user.id, email: user.email };
+      req.session.user = { id: user.id, email: user.email, name: user.name };
       console.log("Session created:", req.session.user);
       req.session.save((saveErr) => {
         console.error("Session save error:", JSON.stringify(saveErr));
