@@ -139,26 +139,26 @@
         const cart = JSON.parse(localStorage.getItem("guest_cart")) || [];
         // Products array with prices
         const products = [
-          { id: 1, price: 110 }, // Bluetooth Speaker
-          { id: 2, price: 215 }, // Smart Phone
-          { id: 3, price: 115 }, // Smart Watch
-          { id: 4, price: 120 }, // Wireless Headphones
-          { id: 5, price: 2520 }, // Computer CPU
-          { id: 6, price: 230 }, // Cooker
-          { id: 7, price: 1330 }, // Electric Cooker
-          { id: 8, price: 730 }, // Curved Monitor
-          { id: 9, price: 130 }, // Ear Buds
-          { id: 10, price: 430 }, // Electric Extension
-          { id: 11, price: 2100 }, // Fridge
-          { id: 12, price: 3500 }, // Gaming CPU
+          { id: 1, price: 1500 }, // Bluetooth Speaker
+          { id: 2, price: 11999 }, // Smart Phone
+          { id: 3, price: 1500 }, // Smart Watch
+          { id: 4, price: 1000 }, // Wireless Headphones
+          { id: 5, price: 9500 }, // Computer CPU
+          { id: 6, price: 3500 }, // Cooker
+          { id: 7, price: 5000 }, // Electric Cooker
+          { id: 8, price: 30000 }, // Curved Monitor
+          { id: 9, price: 700 }, // Ear Buds
+          { id: 10, price: 650 }, // Electric Extension
+          { id: 11, price: 30000 }, // Fridge
+          { id: 12, price: 20000 }, // Gaming CPU
           { id: 13, price: 3500 }, // Gaming Pads
-          { id: 14, price: 5500 }, // Home Theatre
-          { id: 15, price: 500 }, // Laptop Bag
-          { id: 16, price: 6500 }, // Laptop
-          { id: 17, price: 500 }, // Oven
-          { id: 18, price: 8500 }, // Play Station
-          { id: 19, price: 1500 }, // Router
-          { id: 20, price: 9500 }, // Smart TV
+          { id: 14, price: 22500 }, // Home Theatre
+          { id: 15, price: 1000 }, // Laptop Bag
+          { id: 16, price: 36500 }, // Laptop
+          { id: 17, price: 5000 }, // Oven
+          { id: 18, price: 85000 }, // Play Station
+          { id: 19, price: 1700 }, // Router
+          { id: 20, price: 12999 }, // Smart TV
         ];
         total = cart.reduce((sum, item) => {
           const product = products.find(p => p.id === item.product_id);
